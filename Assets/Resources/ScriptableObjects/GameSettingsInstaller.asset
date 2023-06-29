@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1bd107b70cccb8478ae0f40315079ef, type: 3}
+  m_Name: GameSettingsInstaller
+  m_EditorClassIdentifier: 
+  GameSettings:
+    EnemyPrefab: {fileID: 5015256929120781625, guid: 11bee824813846f4bbdf45587e348627,
+      type: 3}
+    PlayerPrefab: {fileID: 4837406328251478621, guid: b95380db620432042b7a6a834eee593f,
+      type: 3}
+    ChestPrefab: {fileID: 7425638117483799795, guid: c19acefc5d29b6443820ad4290814f66,
+      type: 3}
+    MazeWallPrefab: {fileID: 9091547347369061717, guid: 52a3092ef5ea8d44e9acf779ae191b6f,
+      type: 3}
+    MazeWallWithTourchPrefab: {fileID: 2897473457601073980, guid: 22ef5f332c2729e459db8c04e0e7fa4c,
+      type: 3}
+  Maze:
+    MazeData:
+      ChestsNumber: 5
+      EnemiesNumber: 5
+      PlacementThreshold: 0.3
+    MazeConstructor:
+      LabirintSizeX: 30
+      LabirintSizeY: 16
+    PositionCellConverter:
+      MazeStart: {x: 1.5, y: 0, z: 1.5}
+      LabirintWallScaleSize: 3
+  Player:
+    StateMoving:
+      Speed: 10
