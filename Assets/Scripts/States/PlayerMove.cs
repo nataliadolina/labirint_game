@@ -46,7 +46,7 @@ namespace States
                 {
                     if (hit.distance <= 0.5f)
                     {
-                        value = 0f;
+                        return;
                     }                    
                 }
                 
@@ -56,7 +56,8 @@ namespace States
                 if (_lastSpeedRatio != value)
                 {
                     _lastSpeedRatio = value;
-                    _playerAnimatorController.SetRunning(value == 0 ? false : true);
+                    bool isRunning = value == 0 ? false : true;
+                    _playerAnimatorController.SetRunning(isRunning);
                 } 
             }
         }

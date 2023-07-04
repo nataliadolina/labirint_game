@@ -7,8 +7,8 @@ using Props.Walls;
 using Props.Enemies;
 using Maze;
 using Spawners;
-using States;
 using UI;
+using Test.Maze;
 
 namespace Installers
 {
@@ -19,23 +19,39 @@ namespace Installers
 
         public override void InstallBindings()
         {
-            Container.Bind<MazeDataGenerator>().AsSingle().NonLazy();
+            switch (_settings.Test)
+            {
+                case false:
+                    Container.BindInterfacesAndSelfTo<MazeDataGenerator>().AsSingle().NonLazy();
+                    break;
+                case true:
+                    Container.BindInterfacesAndSelfTo<MazeFromFileDataGenerator>().AsSingle().NonLazy();
+                    break;
+            }
+            
             Container.Bind<MazeConstructor>().AsSingle().NonLazy();
+
+            Container.Bind<PathGenerator>().AsSingle().NonLazy();
             Container.Bind<PositionCellConverter>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<TouchController>().AsSingle().NonLazy();
 
+            InstallEnemiesManager();
             InstallSpawner();
             InstallPlayer();
+        }
+
+        private void InstallEnemiesManager()
+        {
+            Container.Bind<EnemiesManager>().AsSingle().NonLazy();
+            Container.BindFactory<Enemy, Enemy.Factory>()
+                    .FromComponentInNewPrefab(_settings.EnemyPrefab)
+                    .UnderTransformGroup("Maze/Enemies")
+                    .WhenInjectedInto<EnemiesManager>();
         }
 
         private void InstallSpawner()
         {
             Container.Bind<Spawner>().AsSingle().NonLazy();
-            Container.BindFactory<Enemy, Enemy.Factory>()
-                    .FromComponentInNewPrefab(_settings.EnemyPrefab)
-                    .WithGameObjectName("Enemy")
-                    .UnderTransformGroup("Maze/Enemies")
-                    .WhenInjectedInto<Spawner>();
             Container.BindFactory<Chest, Chest.Factory>()
                     .FromComponentInNewPrefab(_settings.ChestPrefab)
                     .WithGameObjectName("Chest")
@@ -61,6 +77,8 @@ namespace Installers
         [Serializable]
         public class Settings
         {
+            public bool Test;
+
             public GameObject EnemyPrefab;
             public GameObject PlayerPrefab;
             public GameObject ChestPrefab;

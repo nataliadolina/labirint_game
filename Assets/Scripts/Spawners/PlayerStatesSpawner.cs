@@ -4,7 +4,7 @@ using States;
 
 namespace Spawners
 {
-    public enum PlayerStateTypes
+    internal enum PlayerStateTypes
     {
         PlayerMove
     }

@@ -22,7 +22,6 @@ internal class StateFollowingPath : State
 
     public StateFollowingPath(
         Enemy enemy,
-        Enemy.Settings settings,
         PositionCellConverter positionCellConverter,
         PathGenerator pathGenerator,
         Player player)
@@ -30,7 +29,6 @@ internal class StateFollowingPath : State
         _enemyTransform = enemy.transform;
         _player = player;
         _player = player;
-        _speed = settings.Speed;
 
         _pathGenerator = pathGenerator;
         _positionCellConverter = positionCellConverter;

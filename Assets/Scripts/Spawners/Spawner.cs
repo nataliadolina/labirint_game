@@ -1,7 +1,5 @@
 using ModestTree;
 using UnityEngine;
-using Props.Enemies;
-using Props.Player;
 using Props.Chests;
 using Props.Walls;
 
@@ -19,18 +17,15 @@ namespace Spawners
 
     internal class Spawner
     {
-        private Enemy.Factory _enemyFactory;
         private Chest.Factory _chestFactory;
         private MazeWall.Factory _mazeWallFactory;
         private MazeWallWithTourch.Factory _mazeWallWithTourchFactory;
 
         public Spawner(
-            Enemy.Factory enemyFactory,
             Chest.Factory chestFactory,
             MazeWall.Factory mazeWallFactory,
             MazeWallWithTourch.Factory mazeWallWithTourchFactory)
         {
-            _enemyFactory = enemyFactory;
             _chestFactory = chestFactory;
             _mazeWallFactory = mazeWallFactory;
             _mazeWallWithTourchFactory = mazeWallWithTourchFactory;
@@ -40,9 +35,6 @@ namespace Spawners
         {
             switch (factoryType)
             {
-                case FactoryTypes.Enemy:
-                    return _enemyFactory.Create().transform;
-
                 case FactoryTypes.Chest:
                     return _chestFactory.Create().transform;
 

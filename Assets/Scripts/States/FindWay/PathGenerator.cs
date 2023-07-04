@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Zenject;
+using Extensions;
+using Maze;
+using Interfaces;
 
-public class PathGenerator : MonoBehaviour
+internal class PathGenerator
 {
     #region описание алгоритма нахождения пути
     //1. Создается 2 списка вершин — ожидающие рассмотрения и уже рассмотренные.
@@ -23,9 +25,14 @@ public class PathGenerator : MonoBehaviour
     //а точку, из которой пришли в Y на X.
     //10. Если список точек на рассмотрение пуст, 
     //а до цели мы так и не дошли — значит маршрут не существует.
-    #endregion
-    [Inject]
-    private int[,] _field;
+#endregion
+
+    private IMazeDataGenerator _mazeDataGenerator;
+
+    internal PathGenerator(IMazeDataGenerator mazeDataGenerator)
+    {
+        _mazeDataGenerator = mazeDataGenerator;
+    }
 
     public List<Vector2> GeneratePath(Vector2 startCell, Vector2 targetCell)
     {
@@ -43,19 +50,22 @@ public class PathGenerator : MonoBehaviour
         openSet.Add(startNode);
         while (openSet.Count > 0)
         {
-            Debug.Log(openSet.Count);
             // Шаг 3.
             Node currentNode = openSet.OrderBy(node => node.EstimateFullPathLength).First();
             // Шаг 4.
             if (isEquel(currentNode.Cell, targetCell))
-                return GetPathForNode(currentNode);
+            {
+                List<Vector2> path = GetPathForNode(currentNode);
+                return path;
+            }
+                
             // Шаг 5.
             openSet.Remove(currentNode);
             closedSet.Add(currentNode);
             // Шаг 6.
-            foreach (var neighbourNode in GetNeighbours(currentNode, targetCell, _field))
+            foreach (var neighbourNode in GetNeighbours(currentNode, targetCell, _mazeDataGenerator.Maze))
             {
-                // Шаг 7.
+                // Шаг 7. 
                 if (closedSet.Count(node => isEquel(node.Cell, neighbourNode.Cell)) > 0)
                     continue;
                 var openNode = openSet.FirstOrDefault(node =>
@@ -74,6 +84,7 @@ public class PathGenerator : MonoBehaviour
                 }
             }
         }
+
         // Шаг 10.
         return null;
     }
@@ -103,26 +114,10 @@ public class PathGenerator : MonoBehaviour
     }
     private List<Node> GetNeighbours(Node pathNode, Vector2 goal, int[,] field)
     {
-        var result = new List<Node>(); 
-
-        // Соседними точками являются соседние по стороне клетки.
-        Vector2[] neighbourPoints = new Vector2[4];
-        neighbourPoints[0] = new Vector2(pathNode.Cell.x + 1, pathNode.Cell.y);
-        neighbourPoints[1] = new Vector2(pathNode.Cell.x - 1, pathNode.Cell.y);
-        neighbourPoints[2] = new Vector2(pathNode.Cell.x, pathNode.Cell.y + 1);
-        neighbourPoints[3] = new Vector2(pathNode.Cell.x, pathNode.Cell.y - 1);
-
-        foreach (var cell in neighbourPoints)
+        var result = new List<Node>();
+        List<Vector2> neighbours = pathNode.Cell.GetNeighbours(1, field);
+        foreach (Vector2 cell in neighbours)
         {
-            // Проверяем, что не вышли за границы карты.
-            if (cell.x < 0 || cell.x >= field.GetLength(0))
-                continue;
-            if (cell.y < 0 || cell.y >= field.GetLength(1))
-                continue;
-            // Проверяем, что по клетке можно ходить.
-            if ((field[(int)cell.x, (int)cell.y] == -1))
-                continue;
-            // Заполняем данные для точки маршрута.
             var neighbourNode = new Node()
             {
                 Cell = cell,

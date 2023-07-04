@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
-using Zenject;
+using Interfaces;
 
 namespace Maze
 {
@@ -14,13 +13,19 @@ namespace Maze
         EmptySpace = 0,
     }
 
-    internal class MazeDataGenerator
+    internal class MazeDataGenerator : IMazeDataGenerator
     {
         public float placementThreshold;
         private List<(int, int)> emptyCells;
 
         private int _chestsNumber;
         private int _enemiesNumber;
+        private int _sizeRows;
+        private int _sizeCols;
+
+        private int[,] _maze;
+
+        public int[,] Maze { get => _maze; }
 
         internal MazeDataGenerator(Settings settings)
         {
@@ -29,7 +34,11 @@ namespace Maze
 
             _chestsNumber = settings.ChestsNumber;
             _enemiesNumber = settings.EnemiesNumber;
+
+            _sizeRows = settings.LabirintSizeX;
+            _sizeCols = settings.LabirintSizeY;
         }
+
         private int GenerateIndex(List<int> generated, int minIndex, int maxIndex)
         {
             int index = UnityEngine.Random.Range(minIndex, maxIndex);
@@ -76,9 +85,9 @@ namespace Maze
             }
         }
 
-        public int[,] FromDimensions(int sizeRows, int sizeCols)
+        public int[,] GenerateMazeData()
         {
-            int[,] maze = new int[sizeRows, sizeCols];
+            int[,] maze = new int[_sizeRows, _sizeCols];
             int rMax = maze.GetUpperBound(0);
             int cMax = maze.GetUpperBound(1);
 
@@ -111,12 +120,16 @@ namespace Maze
             GenerateChestsPos(maze);
             GeneratePlayerPos(maze);
             GenerateEnemiesPosts(maze);
+            _maze = maze;
             return maze;
         }
 
         [Serializable]
         public class Settings
         {
+            public int LabirintSizeX;
+            public int LabirintSizeY;
+
             public int ChestsNumber;
             public int EnemiesNumber;
             public float PlacementThreshold;

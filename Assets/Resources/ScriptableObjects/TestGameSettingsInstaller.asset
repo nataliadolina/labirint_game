@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a1bd107b70cccb8478ae0f40315079ef, type: 3}
-  m_Name: GameSettingsInstaller
+  m_Name: TestGameSettingsInstaller
   m_EditorClassIdentifier: 
   GameSettings:
-    Test: 0
+    Test: 1
     EnemyPrefab: {fileID: 5015256929120781625, guid: 11bee824813846f4bbdf45587e348627,
       type: 3}
     PlayerPrefab: {fileID: 4837406328251478621, guid: b95380db620432042b7a6a834eee593f,
@@ -32,7 +32,7 @@ MonoBehaviour:
       EnemiesNumber: 8
       PlacementThreshold: 0.3
     MazeFromFileData:
-      PathToFile: 
+      PathToFile: C:\Users\natdo\unity\UnityProjects\labirint_game\Assets\Resources\Files\test_labirint.txt
     PositionCellConverter:
       MazeStart: {x: 1.5, y: 0, z: 1.5}
       LabirintWallScaleSize: 3

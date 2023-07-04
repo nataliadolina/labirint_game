@@ -2,6 +2,7 @@ using States;
 using System;
 using Zenject;
 using Maze;
+using Test.Maze;
 using UnityEngine;
 
 namespace Installers
@@ -14,8 +15,12 @@ namespace Installers
 
         [SerializeField]
         internal MazeSettings Maze;
+
         [SerializeField]
         internal PlayerSettings Player;
+
+        [SerializeField]
+        internal EnemySettings Enemy;
         
 
         [Serializable]
@@ -28,17 +33,24 @@ namespace Installers
         internal class MazeSettings
         {
             public MazeDataGenerator.Settings MazeData;
-            public MazeConstructor.Settings MazeConstructor;
+            public MazeFromFileDataGenerator.Settings MazeFromFileData;
             public PositionCellConverter.Settings PositionCellConverter;
+        }
+
+        [Serializable]
+        internal class EnemySettings
+        {
+            public FollowMovingSystemState.Settings FollowMovingSystemStateSettings;
         }
 
         public override void InstallBindings()
         {
             Container.BindInstance(Maze.MazeData);
-            Container.BindInstance(Maze.MazeConstructor);
+            Container.BindInstance(Maze.MazeFromFileData);
             Container.BindInstance(Maze.PositionCellConverter);
             Container.BindInstance(Player.StateMoving);
             Container.BindInstance(GameSettings);
+            Container.BindInstance(Enemy.FollowMovingSystemStateSettings);
         }
     }
 }

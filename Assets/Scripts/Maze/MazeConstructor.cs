@@ -3,6 +3,8 @@ using System;
 using Spawners;
 using Installers;
 using Props.Player;
+using Props.Enemies;
+using Interfaces;
 
 namespace Maze
 {
@@ -12,12 +14,10 @@ namespace Maze
         private bool showDebug;
 
         private Player _player;
-        private MazeDataGenerator _dataGenerator;
+        private IMazeDataGenerator _dataGenerator;
         private Spawner _spawner;
         private PositionCellConverter _positionCellConverter;
-
-        private int _labirintSizeX;
-        private int _labirintSizeY;
+        private EnemiesManager _enemiesManager;
 
         private float _wallHalfScaleY;
         private float _playerHalfScaleY;
@@ -26,23 +26,19 @@ namespace Maze
 
         private int[,] _data;
 
-        public int[,] Data { get => _data; }
-
         internal MazeConstructor(
-            MazeDataGenerator dataGenerator,
+            IMazeDataGenerator dataGenerator,
             Spawner spawner,
             PositionCellConverter positionCellConverter,
-            Settings settings,
             GameInstaller.Settings gameInstallerSettings,
+            EnemiesManager enemiesManager,
             Player player)
         {
             _player = player;
             _dataGenerator = dataGenerator;
             _spawner = spawner;
+            _enemiesManager = enemiesManager;
             _positionCellConverter = positionCellConverter;
-
-            _labirintSizeX = settings.LabirintSizeX;
-            _labirintSizeY = settings.LabirintSizeY;
 
             _wallHalfScaleY = gameInstallerSettings.MazeWallPrefab.transform.localScale.y / 2;
             _chestHalfScaleY = gameInstallerSettings.ChestPrefab.transform.localScale.y / 2;
@@ -55,9 +51,9 @@ namespace Maze
         private void BuildMaze()
         {
             bool withTorch = false;
-            for (int row = 0; row < _data.GetUpperBound(0); row++)
+            for (int row = 0; row <= _data.GetUpperBound(0); row++)
             {
-                for (int col = 0; col < _data.GetUpperBound(1); col++)
+                for (int col = 0; col <= _data.GetUpperBound(1); col++)
                 {
                     int sign = _data[row, col];
                     if (sign == (int)MazeSigns.EmptySpace)
@@ -82,27 +78,27 @@ namespace Maze
                             FactoryTypes factoryType = !withTorch ? FactoryTypes.MazeWall : FactoryTypes.MazeWallWithTourch;
                             withTorch = !withTorch;
                             spawnedTransform = _spawner.CreateObject(factoryType);
+                            spawnedTransform.position = cellPosition;
                             break;
 
                         case (int)MazeSigns.Chest:
                             cellPosition.y = _chestHalfScaleY;
                             spawnedTransform = _spawner.CreateObject(FactoryTypes.Chest);
+                            spawnedTransform.position = cellPosition;
                             break;
 
                         case (int)MazeSigns.Enemy:
                             cellPosition.y = _enemyHalfScaleY;
-                            spawnedTransform = _spawner.CreateObject(FactoryTypes.Enemy);
+                            _enemiesManager.CreateEnemy(cellPosition);
                             break;
                     }
-
-                    spawnedTransform.position = cellPosition;
                 }
             }
         }
 
         public void GenerateNewMaze()
         {
-            _data = _dataGenerator.FromDimensions(_labirintSizeX, _labirintSizeY);
+            _data = _dataGenerator.GenerateMazeData();
             BuildMaze();
         }
 
@@ -141,12 +137,5 @@ namespace Maze
         }
 
 #endregion
-
-        [Serializable]
-        public class Settings
-        {
-            public int LabirintSizeX;
-            public int LabirintSizeY;
-        }
     }
 }
