@@ -43,3 +43,11 @@ MonoBehaviour:
     FollowMovingSystemStateSettings:
       MinSpeed: 5
       MaxSpeed: 15
+  Chest:
+    ChestCustomTransformSettings:
+      PositionTransform: {fileID: 2228681193731675694, guid: c19acefc5d29b6443820ad4290814f66,
+        type: 3}
+      LocalScaleTransform: {fileID: 3272445528512027667, guid: 6091257329ae0284e9837a5f09517635,
+        type: 3}
+      RigidbodyGameObject: {fileID: 7425638117483799795, guid: c19acefc5d29b6443820ad4290814f66,
+        type: 3}

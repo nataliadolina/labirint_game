@@ -4,6 +4,8 @@ using Zenject;
 using Maze;
 using Test.Maze;
 using UnityEngine;
+using Props;
+using Props.Chests;
 
 namespace Installers
 {
@@ -21,7 +23,7 @@ namespace Installers
 
         [SerializeField]
         internal EnemySettings Enemy;
-        
+
 
         [Serializable]
         internal class PlayerSettings

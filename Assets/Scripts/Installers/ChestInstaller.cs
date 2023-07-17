@@ -1,6 +1,7 @@
 using UnityEngine;
 using Zenject;
 using Props.Chests;
+using Props;
 using UI;
 
 namespace Installers
@@ -12,13 +13,16 @@ namespace Installers
         [SerializeField]
         private ChestAnimator chestAnimator;
         [SerializeField]
-        private OpenButtonInput openButtonInput;
+        private CustomTransform customChestTransform;
+        [SerializeField]
+        private ChestGUI chestGUI;
 
         public override void InstallBindings()
         {
             Container.BindInstance(chest).AsSingle().NonLazy();
             Container.BindInstance(chestAnimator).AsSingle().NonLazy();
-            Container.BindInstance(openButtonInput).AsSingle().NonLazy();
+            Container.BindInstance(chestGUI).AsSingle().NonLazy();
+            Container.BindInstance(customChestTransform).AsSingle().NonLazy();
         }
     }
 }

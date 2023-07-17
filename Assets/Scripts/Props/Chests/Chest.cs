@@ -1,4 +1,5 @@
-﻿using UI;
+﻿using DG.Tweening;
+using UI;
 using UnityEngine;
 using Zenject;
 
@@ -6,20 +7,19 @@ namespace Props.Chests
 {
     internal class Chest : MonoBehaviour
     {
-        private GameObject _openButton;
+        private ChestGUI _chestGUI;
 
         [Inject]
-        private void Construct(OpenButtonInput openButtonInput)
+        private void Construct(ChestGUI chestGUI)
         {
-            _openButton = openButtonInput.gameObject;
-            _openButton.SetActive(false);
+            _chestGUI = chestGUI;
         }
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
             {
-                _openButton.SetActive(true);
+                _chestGUI.CurrentState = ChestStates.Openable;
             }
         }
 
@@ -27,7 +27,7 @@ namespace Props.Chests
         {
             if (other.CompareTag("Player"))
             {
-                _openButton.SetActive(false);
+                _chestGUI.CurrentState = ChestStates.Default;
             }
         }
 

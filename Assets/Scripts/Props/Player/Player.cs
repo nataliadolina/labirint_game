@@ -8,7 +8,6 @@ namespace Props.Player
     internal class Player : MonoBehaviour
     {
         public Vector3 Position { get => transform.position; set => transform.position = value; }
-
         public Transform Transform { get => transform; }
         public Vector3 Forward { get => transform.forward; set => transform.forward = value; }
 

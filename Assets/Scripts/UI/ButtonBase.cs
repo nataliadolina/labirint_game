@@ -14,7 +14,6 @@ namespace UI
         {
             _button = GetComponent<Button>();
             _button.onClick.AddListener(onClick);
-            Debug.Log(_button.onClick);
         }
 
         protected abstract void onClick();
