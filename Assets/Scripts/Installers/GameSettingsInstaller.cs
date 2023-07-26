@@ -4,8 +4,6 @@ using Zenject;
 using Maze;
 using Test.Maze;
 using UnityEngine;
-using Props;
-using Props.Chests;
 
 namespace Installers
 {
