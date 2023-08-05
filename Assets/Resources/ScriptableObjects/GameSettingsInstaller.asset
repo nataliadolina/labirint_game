@@ -24,6 +24,8 @@ MonoBehaviour:
       type: 3}
     MazeWallWithTourchPrefab: {fileID: 2897473457601073980, guid: 22ef5f332c2729e459db8c04e0e7fa4c,
       type: 3}
+    CoinPrefab: {fileID: 5940073535992218960, guid: 4e3e83b74e33bbd46ba57931bd3f3953,
+      type: 3}
   Maze:
     MazeData:
       LabirintSizeX: 30
@@ -43,11 +45,6 @@ MonoBehaviour:
     FollowMovingSystemStateSettings:
       MinSpeed: 5
       MaxSpeed: 15
-  Chest:
-    ChestCustomTransformSettings:
-      PositionTransform: {fileID: 2228681193731675694, guid: c19acefc5d29b6443820ad4290814f66,
-        type: 3}
-      LocalScaleTransform: {fileID: 3272445528512027667, guid: 6091257329ae0284e9837a5f09517635,
-        type: 3}
-      RigidbodyGameObject: {fileID: 7425638117483799795, guid: c19acefc5d29b6443820ad4290814f66,
-        type: 3}
+  UiSettings:
+    PickUpUIAnimationSettings:
+      Duration: 1

@@ -8,6 +8,7 @@ using Props.Enemies;
 using Maze;
 using Spawners;
 using UI;
+using Pool;
 using Test.Maze;
 
 namespace Installers
@@ -38,6 +39,7 @@ namespace Installers
             InstallEnemiesManager();
             InstallSpawner();
             InstallPlayer();
+            InstallUI();
         }
 
         private void InstallEnemiesManager()
@@ -47,6 +49,17 @@ namespace Installers
                     .FromComponentInNewPrefab(_settings.EnemyPrefab)
                     .UnderTransformGroup("Maze/Enemies")
                     .WhenInjectedInto<EnemiesManager>();
+        }
+
+        private void InstallUI()
+        {
+            Container.Bind<PickUpPool>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<PickUpUISpawner>().AsSingle().NonLazy();
+            Container.BindFactory<PickUpUIAnimation, PickUpUIAnimation.Factory>()
+                .FromComponentInNewPrefab(_settings.CoinPrefab)
+                .WithGameObjectName("Coin")
+                .UnderTransformGroup("Canvas")
+                .WhenInjectedInto<PickUpUISpawner>();
         }
 
         private void InstallSpawner()
@@ -84,6 +97,8 @@ namespace Installers
             public GameObject ChestPrefab;
             public GameObject MazeWallPrefab;
             public GameObject MazeWallWithTourchPrefab;
+
+            public GameObject CoinPrefab;
         }
     }
 }

@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using Zenject;
 namespace Props.Chests
 {
@@ -53,7 +53,7 @@ namespace Props.Chests
             GUILayout.BeginVertical();
             {
                 GUILayout.FlexibleSpace();
-                if (GUILayout.Button("Îòêðûòü"))
+                if (GUILayout.Button("ÐžÑ‚ÐºÑ€Ñ‹Ñ‚ÑŒ"))
                 {
                     _chestAnimator.Open();
                     CurrentState = ChestStates.Default;

@@ -4,6 +4,7 @@ using Zenject;
 using Maze;
 using Test.Maze;
 using UnityEngine;
+using UI;
 
 namespace Installers
 {
@@ -22,6 +23,8 @@ namespace Installers
         [SerializeField]
         internal EnemySettings Enemy;
 
+        [SerializeField]
+        internal UISettings UiSettings;
 
         [Serializable]
         internal class PlayerSettings
@@ -43,6 +46,12 @@ namespace Installers
             public FollowMovingSystemState.Settings FollowMovingSystemStateSettings;
         }
 
+        [Serializable]
+        internal class UISettings
+        {
+            public PickUpUIAnimation.Settings PickUpUIAnimationSettings;
+        }
+
         public override void InstallBindings()
         {
             Container.BindInstance(Maze.MazeData);
@@ -51,6 +60,7 @@ namespace Installers
             Container.BindInstance(Player.StateMoving);
             Container.BindInstance(GameSettings);
             Container.BindInstance(Enemy.FollowMovingSystemStateSettings);
+            Container.BindInstance(UiSettings.PickUpUIAnimationSettings);
         }
     }
 }

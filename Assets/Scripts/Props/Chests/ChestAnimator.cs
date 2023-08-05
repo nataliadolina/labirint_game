@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Zenject;
+using Pool;
 
 namespace Props.Chests
 {
@@ -13,6 +14,9 @@ namespace Props.Chests
 
         [Inject]
         private Chest _chest;
+
+        [Inject]
+        private PickUpPool _pickUpPool;
 
         private void Start()
         {
@@ -27,8 +31,6 @@ namespace Props.Chests
                     _openDuration = clip.length;
                 }
             }
-
-            Material mat = GetComponentInChildren<Renderer>().material;
         }
 
         internal void Open()
@@ -40,7 +42,9 @@ namespace Props.Chests
         internal IEnumerator WaitToDestroyChest()
         {
             yield return new WaitForSeconds(_openDuration);
+            _pickUpPool.GetFreeElement();
             Destroy(_chest.gameObject);
+            _pickUpPool.GetFreeElement();
         }
     }
 }
