@@ -19,7 +19,7 @@ namespace UI
         private void Start()
         {
             resourceAmountText.text = "0";
-            _iconTween = iconTransform.DOScale(iconTransform.localScale * 1.5f, 0.5f).SetLoops(2, LoopType.Yoyo).Pause();
+            _iconTween = iconTransform.DOScale(iconTransform.localScale * 1.5f, 0.5f).SetLoops(2, LoopType.Yoyo).SetAutoKill(false).Pause();
         }
 
         internal void AddResource()

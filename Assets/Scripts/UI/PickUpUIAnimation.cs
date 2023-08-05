@@ -18,12 +18,14 @@ namespace UI
         private Tween[] _tweens;
 
         private ResourceCounter _resourceCounter;
+
+        private float _duration;
         
 
         [Inject]
         private void Construct(Settings settings, ResourceCounter resourceCounter)
         {
-            float duration = settings.Duration;
+            _duration = settings.Duration;
 
             _aimPosition = resourceCounter.IconTransform.position;
             _resourceCounter = resourceCounter;
@@ -33,18 +35,25 @@ namespace UI
 
             Vector3 aimScale = _rectTransform.localScale * 1.5f;
 
-            Tween positionTween = _rectTransform.DOMove(_aimPosition, duration)
-                .SetEase(Ease.InQuad)
+            
+            Tween scaleTween = _rectTransform.DOScale(aimScale, _duration / 2)
+                .SetLoops(2, LoopType.Yoyo)
                 .OnStart(OnStart)
                 .OnComplete(OnComplete)
                 .SetAutoKill(false)
                 .Pause();
-            Tween scaleTween = _rectTransform.DOScale(aimScale, duration / 2)
-                .SetLoops(2, LoopType.Yoyo)
+
+            _tweens = new Tween[2] { scaleTween, null };
+        }
+
+        internal void SetFirstPathPoint(Vector3 startPosition)
+        {
+            _rectTransform.position = startPosition;
+            Tween positionTween = _rectTransform.DOMove(_aimPosition, _duration)
+                .SetEase(Ease.InQuad)
                 .SetAutoKill(false)
                 .Pause();
-
-            _tweens = new Tween[2] { positionTween, scaleTween };
+            _tweens[1] = positionTween;
         }
 
         private void OnComplete()

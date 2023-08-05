@@ -1,6 +1,4 @@
-﻿using DG.Tweening;
-using UI;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 namespace Props.Chests
@@ -8,6 +6,8 @@ namespace Props.Chests
     internal class Chest : MonoBehaviour
     {
         private ChestGUI _chestGUI;
+
+        internal Vector3 Position => transform.position;
 
         [Inject]
         private void Construct(ChestGUI chestGUI)

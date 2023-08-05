@@ -42,8 +42,9 @@ namespace Props.Chests
         internal IEnumerator WaitToDestroyChest()
         {
             yield return new WaitForSeconds(_openDuration);
-            Transform pickUpTransform = _pickUpPool.GetFreeElement();
-            pickUpTransform.position = transform.position;
+            var animation = _pickUpPool.GetFreeElement();
+            animation.SetFirstPathPoint(Camera.main.WorldToScreenPoint(_chest.Position));
+            animation.StartAnimation();
             Destroy(_chest.gameObject);
         }
     }

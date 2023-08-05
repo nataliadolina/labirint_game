@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2785675443564699332}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,9 +57,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4837406328251478621}
   m_Material: {fileID: 13400000, guid: 1b54d13c2cfd5ab41a6cf4c43f53a195, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1.0735931, y: 4.3605022, z: 0.71123505}
   m_Center: {x: -0.026306152, y: 2.160678, z: 0.015716553}
 --- !u!54 &3592197089969088816
@@ -69,10 +77,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4837406328251478621}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 70
   m_Drag: 1
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -114,6 +133,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 4837406328251478623}
     m_Modifications:
     - target: {fileID: 8936840688670593969, guid: 91652477daefd794bbfc1601d330e33b,
@@ -182,6 +202,9 @@ PrefabInstance:
       value: PT_Medieval_Boy_Peasant_01_a
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91652477daefd794bbfc1601d330e33b, type: 3}
 --- !u!4 &4550854631100344567 stripped
 Transform:
