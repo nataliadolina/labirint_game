@@ -42,9 +42,9 @@ namespace Props.Chests
         internal IEnumerator WaitToDestroyChest()
         {
             yield return new WaitForSeconds(_openDuration);
-            _pickUpPool.GetFreeElement();
+            Transform pickUpTransform = _pickUpPool.GetFreeElement();
+            pickUpTransform.position = transform.position;
             Destroy(_chest.gameObject);
-            _pickUpPool.GetFreeElement();
         }
     }
 }

@@ -12,10 +12,11 @@ namespace Pool
             _pool = new Pool<PickUpUIAnimation>(spawner, 0);
         }
 
-        internal void GetFreeElement()
+        internal Transform GetFreeElement()
         {
-            PickUpUIAnimation pickUp = _pool.GetFreeELement();
+            PickUpUIAnimation pickUp = _pool.GetFreeElement();
             pickUp.StartAnimation();
+            return pickUp.transform;
         }
     }
 }

@@ -54,7 +54,7 @@ namespace Pool
             return false;
         }
 
-        internal T GetFreeELement()
+        internal T GetFreeElement()
         {
             if (HasFreeElement(out T element))
             {
