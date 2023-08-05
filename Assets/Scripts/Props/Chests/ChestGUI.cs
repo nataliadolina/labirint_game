@@ -18,6 +18,7 @@ namespace Props.Chests
         [Inject]
         private ChestAnimator _chestAnimator;
 
+        private Transform _chestTr;
         private CustomTransform _chestTransform;
 
         private Camera _camera;
@@ -25,11 +26,12 @@ namespace Props.Chests
         internal ChestStates CurrentState;
 
         [Inject]
-        private void OnConstruct(CustomTransform customChestTransform)
+        private void OnConstruct(CustomTransform customChestTransform, Chest chest)
         {
             CurrentState = ChestStates.Default;
             _camera = Camera.main;
             _chestTransform = customChestTransform;
+            _chestTr = chest.transform;
         }
 
         private void OnGUI()
@@ -44,8 +46,8 @@ namespace Props.Chests
         }
         private void OpenGUI()
         {
-            Vector3 chestScreenPosition = _camera.WorldToScreenPoint(_chestTransform.Position + _chestTransform.LocalScale);
-            GUILayout.Window(0, new Rect(_camera.pixelRect.width - chestScreenPosition.x, _camera.pixelRect.height - chestScreenPosition.y, 120, 50), OpenWindowLayout, "");
+            Vector3 chestScreenPosition = _camera.WorldToScreenPoint(_chestTransform.Position);
+            GUILayout.Window(0, new Rect(chestScreenPosition.x, _camera.pixelRect.height - chestScreenPosition.y, 120, 50), OpenWindowLayout, "");
         }
 
         private void OpenWindowLayout(int windowId)

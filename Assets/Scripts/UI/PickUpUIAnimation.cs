@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Zenject;
@@ -35,7 +33,6 @@ namespace UI
 
             Vector3 aimScale = _rectTransform.localScale * 1.5f;
 
-            
             Tween scaleTween = _rectTransform.DOScale(aimScale, _duration / 2)
                 .SetLoops(2, LoopType.Yoyo)
                 .OnStart(OnStart)

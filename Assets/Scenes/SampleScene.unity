@@ -2786,8 +2786,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bc91a07e454f4e44b927cdfccb42978, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xLimitOffset: 44.8
-  zLimitOffset: 24.1
+  xLimitOffset: 51.1
+  zLimitOffset: 33.1
 --- !u!4 &1079722688
 Transform:
   m_ObjectHideFlags: 0
