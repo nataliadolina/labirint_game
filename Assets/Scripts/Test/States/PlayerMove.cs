@@ -46,6 +46,7 @@ namespace States
                 {
                     if (hit.distance <= 0.5f)
                     {
+                        _playerAnimatorController.SetRunning(false);
                         return;
                     }                    
                 }
