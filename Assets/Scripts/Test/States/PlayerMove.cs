@@ -4,64 +4,21 @@ using UnityEngine;
 using Zenject;
 using Props.Player;
 using Maze;
+using UniRx;
 
 namespace States
 {
     internal class PlayerMove : State
     { 
         private float _speed;
-
-        private Vector2 _lastDirection;
-        private float _lastSpeedRatio = 0;
-
-        private PlayerDirectionInput _directionInput;
         private FieldLimits _fieldLimits;
 
         private Player _player;
-
         private PlayerAnimatorController _playerAnimatorController;
 
-        private Vector2 LastDirection
-        { 
-            get => _lastDirection;
-            set
-            { 
-                if (_lastDirection == value || value == Vector2.zero)
-                {
-                    return;
-                }
+        private ReactiveProperty<float> _lastSpeedRatio = new ReactiveProperty<float>(0);
 
-                _lastDirection = value;
-                _player.Forward = new Vector3(value.x, 0, value.y);
-            }
-        }
-
-        private float LastSpeedRatio
-        {
-            get => _lastSpeedRatio;
-            set
-            {
-                RaycastHit hit;
-                if (Physics.Raycast(_player.Position, _player.Forward, out hit, 93.1f))
-                {
-                    if (hit.distance <= 0.5f)
-                    {
-                        _playerAnimatorController.SetRunning(false);
-                        return;
-                    }                    
-                }
-                
-                Vector3 moveToPosition = _player.Position + _player.Forward * _speed * value * Time.deltaTime;
-                _player.Position = _fieldLimits.ClampPlayerPosition(moveToPosition);
-
-                if (_lastSpeedRatio != value)
-                {
-                    _lastSpeedRatio = value;
-                    bool isRunning = value == 0 ? false : true;
-                    _playerAnimatorController.SetRunning(isRunning);
-                } 
-            }
-        }
+        private ReactiveProperty<Vector2> _lastDirection = new ReactiveProperty<Vector2>();
 
         internal PlayerMove(
             FieldLimits fieldLimits,
@@ -72,21 +29,52 @@ namespace States
         {
             _fieldLimits = fieldLimits;
             _player = player;
-            _directionInput = directionInput;
-            directionInput.onPlayerDirectionInput += ApplyDirection;
+            
             _speed = settings.Speed;
             _playerAnimatorController = playerAnimatorController;
+
+            CreateSubscribions(directionInput);
         }
 
-        private void ApplyDirection(Vector2 direction)
+        private void CreateSubscribions(PlayerDirectionInput directionInput)
         {
-            LastSpeedRatio = direction.sqrMagnitude;
-            LastDirection = direction;
+            directionInput.Direction
+                .Where(direction => _lastDirection.Value != direction && direction != Vector2.zero)
+                .Subscribe(direction => _lastDirection.Value = direction);
+            directionInput.SpeedRatio
+                .Subscribe(speedRatio => _lastSpeedRatio.Value = speedRatio);
+
+            _lastSpeedRatio.Subscribe(speedRatio => _playerAnimatorController.SetRunning(speedRatio == 0 ? false : true));
+            _lastDirection
+                .Where(x => x != Vector2.zero)
+                .Subscribe(direction => _player.Forward = new Vector3(direction.x, 0, direction.y));
         }
 
-        public override void Dispose()
+        private void Move(float speedRatio)
         {
-            _directionInput.onPlayerDirectionInput -= ApplyDirection;
+            Vector3 moveToPosition = _player.Position + _player.Forward * _speed * speedRatio * Time.deltaTime;
+            _player.Position = _fieldLimits.ClampPlayerPosition(moveToPosition);
+        }
+
+        public override void Update()
+        {
+            if (!IsForwardAnyObstacles())
+            {
+                Move(_lastSpeedRatio.Value);
+            }
+        }
+
+        private bool IsForwardAnyObstacles()
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(_player.Position, _player.Forward, out hit, 93.1f))
+            {
+                if (hit.distance <= 0.5f)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         [Serializable]

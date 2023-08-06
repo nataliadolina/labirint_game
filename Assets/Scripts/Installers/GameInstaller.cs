@@ -34,7 +34,6 @@ namespace Installers
 
             Container.Bind<PathGenerator>().AsSingle().NonLazy();
             Container.Bind<PositionCellConverter>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<TouchController>().AsSingle().NonLazy();
 
             InstallEnemiesManager();
             InstallSpawner();

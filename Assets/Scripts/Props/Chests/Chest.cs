@@ -7,24 +7,24 @@ namespace Props.Chests
     {
         private ChestGUI _chestGUI;
 
-        internal Vector3 Position => transform.position;
-
         [Inject]
         private void Construct(ChestGUI chestGUI)
         {
             _chestGUI = chestGUI;
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnCollisionEnter(Collision collision)
         {
+            Collider other = collision.collider;
             if (other.CompareTag("Player"))
             {
                 _chestGUI.CurrentState = ChestStates.Openable;
             }
         }
 
-        private void OnTriggerExit(Collider other)
+        private void OnCollisionExit(Collision collision)
         {
+            Collider other = collision.collider;
             if (other.CompareTag("Player"))
             {
                 _chestGUI.CurrentState = ChestStates.Default;

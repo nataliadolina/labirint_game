@@ -18,6 +18,9 @@ namespace Props.Chests
         [Inject]
         private PickUpPool _pickUpPool;
 
+        [Inject]
+        private CustomTransform _chestTransform;
+
         private void Start()
         {
             _animator = GetComponent<Animator>();
@@ -43,7 +46,7 @@ namespace Props.Chests
         {
             yield return new WaitForSeconds(_openDuration);
             var animation = _pickUpPool.GetFreeElement();
-            animation.SetFirstPathPoint(Camera.main.WorldToScreenPoint(_chest.Position));
+            animation.SetFirstPathPoint(Camera.main.WorldToScreenPoint(_chestTransform.Position));
             animation.StartAnimation();
             Destroy(_chest.gameObject);
         }

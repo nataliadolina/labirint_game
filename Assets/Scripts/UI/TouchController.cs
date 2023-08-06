@@ -1,82 +1,29 @@
 using UnityEngine;
+using UniRx.Triggers;
+using UniRx;
 using Zenject;
 
 namespace UI
 {
-    internal class TouchController : ITickable
+    internal class TouchController : MonoBehaviour
     {
-        private bool _isUserTouchingScreen;
-        private bool IsUserTouchingScreen
-        {
-            set
-            {
-                if (value == false && value == _isUserTouchingScreen)
-                {
-                    return;
-                }
-
-                if (value == true && value == _isUserTouchingScreen)
-                {
-                    playerDirectionInput.SetKnobPosition();
-                    return;
-                }
-
-                _isUserTouchingScreen = value;
-
-                if (value)
-                {
-                    playerDirectionInput.StartUpdateJoyctickDirection();
-                    return;
-                    
-
-                }
-                else if (!value)
-                {
-                    playerDirectionInput.ResetJoystick();
-                    _isUserTouchingScreen = value;
-
-                }
-            }
-        }
-
-        public void Tick()
-        {
-            SetIsInputTouchDown();
-            SetIsInputTouchUp();
-            SetIsInputTouchStay();
-        }
-
-
-        private void SetIsInputTouchDown()
-        {
-            if (!Input.GetMouseButtonDown(0))
-            {
-                return;
-            }
-
-            IsUserTouchingScreen = true;
-        }
-
-        private void SetIsInputTouchUp()
-        {
-            if (!Input.GetMouseButtonUp(0))
-            {
-                return;
-            }
-
-            IsUserTouchingScreen = false;
-        }
-
-        private void SetIsInputTouchStay()
-        {
-            if (Input.GetMouseButton(0))
-            {
-                IsUserTouchingScreen = true;
-            }
-        }
+        [Inject]
+        private PlayerDirectionInput _playerDirectionInput;
 
         [Inject]
-        private PlayerDirectionInput playerDirectionInput;
+        private void Construct()
+        {
+            this.UpdateAsObservable()
+            .Where(_ => Input.GetMouseButtonDown(0))
+            .Subscribe(_ => _playerDirectionInput.StartUpdateJoyctickDirection());
 
+            this.UpdateAsObservable()
+            .Where(_ => Input.GetMouseButtonUp(0))
+            .Subscribe(_ => _playerDirectionInput.ResetJoystick());
+
+            this.UpdateAsObservable()
+            .Where(_ => Input.GetMouseButton(0))
+            .Subscribe(x => _playerDirectionInput.SetKnobPosition());
+        }
     }
 }

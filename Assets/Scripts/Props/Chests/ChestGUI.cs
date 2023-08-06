@@ -18,7 +18,6 @@ namespace Props.Chests
         [Inject]
         private ChestAnimator _chestAnimator;
 
-        private Transform _chestTr;
         private CustomTransform _chestTransform;
 
         private Camera _camera;
@@ -31,7 +30,6 @@ namespace Props.Chests
             CurrentState = ChestStates.Default;
             _camera = Camera.main;
             _chestTransform = customChestTransform;
-            _chestTr = chest.transform;
         }
 
         private void OnGUI()

@@ -36,7 +36,7 @@ Transform:
   m_Children:
   - {fileID: 708401971672129953}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4932200470381184030
 MonoBehaviour:
@@ -99,12 +99,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5.6834755, y: 3.0586634, z: 5.2720194}
-  m_Center: {x: -0.21174335, y: 1.0293317, z: 0.007212162}
+  m_Size: {x: 3.333418, y: 1.9560683, z: 2.0971835}
+  m_Center: {x: -0.0052580833, y: 0.9242964, z: 0.0043023825}
 --- !u!114 &7860962132031483726
 MonoBehaviour:
   m_ObjectHideFlags: 0
