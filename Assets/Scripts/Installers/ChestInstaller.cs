@@ -2,14 +2,13 @@ using UnityEngine;
 using Zenject;
 using Props.Chests;
 using Props;
-using UI;
 
 namespace Installers
 {
     internal class ChestInstaller : MonoInstaller
     {
         [SerializeField]
-        private Chest chest;
+        private PickUpUIAnimationLauncher pickUpUIAnimationLauncher;
         [SerializeField]
         private ChestAnimator chestAnimator;
         [SerializeField]
@@ -19,10 +18,10 @@ namespace Installers
 
         public override void InstallBindings()
         {
-            Container.BindInstance(chest).AsSingle().NonLazy();
             Container.BindInstance(chestAnimator).AsSingle().NonLazy();
             Container.BindInstance(chestGUI).AsSingle().NonLazy();
             Container.BindInstance(customChestTransform).AsSingle().NonLazy();
+            Container.BindInstance(pickUpUIAnimationLauncher).AsSingle().NonLazy();
         }
     }
 }

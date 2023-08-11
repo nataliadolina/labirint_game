@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Extensions;
+using Utilities.Extensions;
 using Maze;
 using Interfaces;
 

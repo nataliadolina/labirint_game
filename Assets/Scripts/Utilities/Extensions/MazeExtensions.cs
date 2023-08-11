@@ -3,7 +3,7 @@ using UnityEngine;
 using Maze;
 using System.Linq;
 
-namespace Extensions
+namespace Utilities.Extensions
 {
     internal static class MazeExtensions
     {

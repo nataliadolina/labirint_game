@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Interfaces;
+using Utilities.Utils;
 
 namespace Maze
 {
@@ -23,6 +24,8 @@ namespace Maze
         private int _sizeRows;
         private int _sizeCols;
 
+        private List<int> _generated = new List<int>();
+
         private int[,] _maze;
 
         public int[,] Maze { get => _maze; }
@@ -33,63 +36,47 @@ namespace Maze
             emptyCells = new List<(int, int)>();
 
             _chestsNumber = settings.ChestsNumber;
+
             _enemiesNumber = settings.EnemiesNumber;
 
             _sizeRows = settings.LabirintSizeX;
             _sizeCols = settings.LabirintSizeY;
         }
 
-        private int GenerateIndex(List<int> generated, int minIndex, int maxIndex)
+        private int GenerateIndex(int minIndex, int maxIndex)
         {
             int index = UnityEngine.Random.Range(minIndex, maxIndex);
-            while (generated.Contains(index))
+            while (_generated.Contains(index))
             {
                 index = UnityEngine.Random.Range(0, maxIndex);
             }
+
+            _generated.Add(index);
             return index;
         }
-        private void GenerateChestsPos(int[,] maze)
+
+        private void GeneratePoses(MazeSigns sign, int number)
         {
-            List<int> generated = new List<int>();
-            for (int i = 0; i < _chestsNumber; i++)
+            for (int i = 0; i < number; i++)
             {
-                var index = GenerateIndex(generated, 1, emptyCells.Count);
+                var index = GenerateIndex(1, emptyCells.Count);
                 var cell = emptyCells[index];
-                maze[cell.Item1, cell.Item2] = (int)MazeSigns.Chest;
-                generated.Add(index);
+                _maze[cell.Item1, cell.Item2] = (int)sign;
             }
         }
-        private void GenerateEnemiesPosts(int[,] maze)
+
+        private void GeneratePlayerPos()
         {
-            List<int> generated = new List<int>();
-            for (int i = 0; i < _enemiesNumber; i++)
-            {
-                var index = GenerateIndex(generated, 1, emptyCells.Count);
-                var cell = emptyCells[index];
-                maze[cell.Item1, cell.Item2] = (int)MazeSigns.Enemy;
-                generated.Add(index);
-            }
-        }
-        private void GeneratePlayerPos(int[,] maze)
-        {
-            for (int row = 0; row < maze.GetUpperBound(0); row++)
-            {
-                for (int col = 0; col < maze.GetUpperBound(1); col++)
-                {
-                    if (maze[row, col] == 0)
-                    {
-                        maze[row, col] = (int)MazeSigns.Player;
-                        return;
-                    }
-                }
-            }
+            var cell = emptyCells[0];
+            _generated.Add(0);
+            _maze[cell.Item1, cell.Item2] = (int)MazeSigns.Player;
         }
 
         public int[,] GenerateMazeData()
         {
-            int[,] maze = new int[_sizeRows, _sizeCols];
-            int rMax = maze.GetUpperBound(0);
-            int cMax = maze.GetUpperBound(1);
+            _maze = new int[_sizeRows, _sizeCols];
+            int rMax = _maze.GetUpperBound(0);
+            int cMax = _maze.GetUpperBound(1);
 
             for (int i = 0; i <= rMax; i++)
             {
@@ -97,31 +84,30 @@ namespace Maze
                 {
                     if (i == 0 || j == 0 || i == rMax || j == cMax)
                     {
-                        maze[i, j] = 0;
+                        _maze[i, j] = 0;
                     }
                     else if (i % 2 == 0 && j % 2 == 0)
                     {
                         if (UnityEngine.Random.value > placementThreshold)
                         {
-                            maze[i, j] = (int)MazeSigns.Wall;
+                            _maze[i, j] = (int)MazeSigns.Wall;
 
                             int a = UnityEngine.Random.value < .5 ? (int)MazeSigns.EmptySpace : 1;
                             int b = a != 0 ? (int)MazeSigns.EmptySpace : (UnityEngine.Random.value < .5 ? -1 : 1);
-                            maze[i + a, j + b] = (int)MazeSigns.Wall;
+                            _maze[i + a, j + b] = (int)MazeSigns.Wall;
                         }
                     }
-                    if (maze[i, j] == 0)
+                    if (_maze[i, j] == 0)
                     {
                         emptyCells.Add((i, j));
                     }
                 }
             }
 
-            GenerateChestsPos(maze);
-            GeneratePlayerPos(maze);
-            GenerateEnemiesPosts(maze);
-            _maze = maze;
-            return maze;
+            GeneratePlayerPos();
+            GeneratePoses(MazeSigns.Chest, _chestsNumber);
+            GeneratePoses(MazeSigns.Enemy, _enemiesNumber);
+            return _maze;
         }
 
         [Serializable]
@@ -132,6 +118,9 @@ namespace Maze
 
             public int ChestsNumber;
             public int EnemiesNumber;
+
+            public List<PickUpTypeAmountData> PickUpAmount;
+
             public float PlacementThreshold;
         }
     }

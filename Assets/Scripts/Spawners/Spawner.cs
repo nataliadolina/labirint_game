@@ -1,47 +1,42 @@
 using ModestTree;
 using UnityEngine;
-using Props.Chests;
 using Props.Walls;
 
 
 namespace Spawners
 {
-    public enum FactoryTypes
+    public enum WallType
     {
-        Player,
-        Chest,
-        Enemy,
         MazeWall,
         MazeWallWithTourch,
     }
 
     internal class Spawner
     {
-        private Chest.Factory _chestFactory;
         private MazeWall.Factory _mazeWallFactory;
         private MazeWallWithTourch.Factory _mazeWallWithTourchFactory;
 
+        private bool _withTorch = false;
+
         public Spawner(
-            Chest.Factory chestFactory,
             MazeWall.Factory mazeWallFactory,
             MazeWallWithTourch.Factory mazeWallWithTourchFactory)
         {
-            _chestFactory = chestFactory;
             _mazeWallFactory = mazeWallFactory;
             _mazeWallWithTourchFactory = mazeWallWithTourchFactory;
         }
 
-        public Transform CreateObject(FactoryTypes factoryType)
+        public Transform CreateObject()
         {
-            switch (factoryType)
-            {
-                case FactoryTypes.Chest:
-                    return _chestFactory.Create().transform;
+            WallType wallType = !_withTorch ? WallType.MazeWall : WallType.MazeWallWithTourch;
+            _withTorch = !_withTorch;
 
-                case FactoryTypes.MazeWall:
+            switch (wallType)
+            {
+                case WallType.MazeWall:
                     return _mazeWallFactory.Create().transform;
 
-                case FactoryTypes.MazeWallWithTourch:
+                case WallType.MazeWallWithTourch:
                     return _mazeWallWithTourchFactory.Create().transform;
             }
 

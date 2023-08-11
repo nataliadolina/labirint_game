@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using Zenject;
-using Pool;
 
 namespace Props.Chests
 {
@@ -13,13 +12,10 @@ namespace Props.Chests
         private Animator _animator;
 
         [Inject]
-        private Chest _chest;
-
-        [Inject]
-        private PickUpPool _pickUpPool;
-
-        [Inject]
         private CustomTransform _chestTransform;
+
+        [Inject]
+        private PickUpUIAnimationLauncher _pickUpUIAnimationLauncher;
 
         private void Start()
         {
@@ -45,10 +41,9 @@ namespace Props.Chests
         internal IEnumerator WaitToDestroyChest()
         {
             yield return new WaitForSeconds(_openDuration);
-            var animation = _pickUpPool.GetFreeElement();
-            animation.SetFirstPathPoint(Camera.main.WorldToScreenPoint(_chestTransform.Position));
-            animation.StartAnimation();
-            Destroy(_chest.gameObject);
+
+            _pickUpUIAnimationLauncher.LaunchAnimation();
+            Destroy(_chestTransform.GameObject);
         }
     }
 }

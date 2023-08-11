@@ -25,7 +25,7 @@ namespace Props.Chests
         internal ChestStates CurrentState;
 
         [Inject]
-        private void OnConstruct(CustomTransform customChestTransform, Chest chest)
+        private void OnConstruct(CustomTransform customChestTransform)
         {
             CurrentState = ChestStates.Default;
             _camera = Camera.main;

@@ -17,11 +17,11 @@ namespace Maze
         private IMazeDataGenerator _dataGenerator;
         private Spawner _spawner;
         private PositionCellConverter _positionCellConverter;
-        private EnemiesManager _enemiesManager;
+        private EnemySpawner _enemySpawner;
+        private ChestSpawner _chestSpawner;
 
         private float _wallHalfScaleY;
         private float _playerHalfScaleY;
-        private float _chestHalfScaleY;
         private float _enemyHalfScaleY;
 
         private int[,] _data;
@@ -29,19 +29,20 @@ namespace Maze
         internal MazeConstructor(
             IMazeDataGenerator dataGenerator,
             Spawner spawner,
+            ChestSpawner chestSpawner,
             PositionCellConverter positionCellConverter,
             GameInstaller.Settings gameInstallerSettings,
-            EnemiesManager enemiesManager,
+            EnemySpawner enemySpawner,
             Player player)
         {
             _player = player;
             _dataGenerator = dataGenerator;
             _spawner = spawner;
-            _enemiesManager = enemiesManager;
+            _chestSpawner = chestSpawner;
+            _enemySpawner = enemySpawner;
             _positionCellConverter = positionCellConverter;
 
             _wallHalfScaleY = gameInstallerSettings.MazeWallPrefab.transform.localScale.y / 2;
-            _chestHalfScaleY = gameInstallerSettings.ChestPrefab.transform.localScale.y / 2;
             _playerHalfScaleY = gameInstallerSettings.PlayerPrefab.transform.localScale.y / 2;
             _enemyHalfScaleY = gameInstallerSettings.EnemyPrefab.transform.localScale.y / 2;
 
@@ -50,7 +51,6 @@ namespace Maze
 
         private void BuildMaze()
         {
-            bool withTorch = false;
             for (int row = 0; row <= _data.GetUpperBound(0); row++)
             {
                 for (int col = 0; col <= _data.GetUpperBound(1); col++)
@@ -70,26 +70,22 @@ namespace Maze
                         continue;
                     }
 
-                    Transform spawnedTransform = null;
                     switch (sign)
                     {
                         case (int)MazeSigns.Wall:
                             cellPosition.y = _wallHalfScaleY; 
-                            FactoryTypes factoryType = !withTorch ? FactoryTypes.MazeWall : FactoryTypes.MazeWallWithTourch;
-                            withTorch = !withTorch;
-                            spawnedTransform = _spawner.CreateObject(factoryType);
-                            spawnedTransform.position = cellPosition;
+                            
+                            Transform wallTransform = _spawner.CreateObject();
+                            wallTransform.position = cellPosition;
                             break;
 
                         case (int)MazeSigns.Chest:
-                            cellPosition.y = _chestHalfScaleY;
-                            spawnedTransform = _spawner.CreateObject(FactoryTypes.Chest);
-                            spawnedTransform.position = cellPosition;
+                            _chestSpawner.Spawn(cellPosition);
                             break;
 
                         case (int)MazeSigns.Enemy:
                             cellPosition.y = _enemyHalfScaleY;
-                            _enemiesManager.CreateEnemy(cellPosition);
+                            _enemySpawner.CreateEnemy(cellPosition);
                             break;
                     }
                 }

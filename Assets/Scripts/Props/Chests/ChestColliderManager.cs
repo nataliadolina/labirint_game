@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Zenject;
 
 namespace Props.Chests
 {
-    internal class Chest : MonoBehaviour
+    internal class ChestColliderManager : MonoBehaviour
     {
         private ChestGUI _chestGUI;
 
@@ -30,11 +30,5 @@ namespace Props.Chests
                 _chestGUI.CurrentState = ChestStates.Default;
             }
         }
-
-        public class Factory : PlaceholderFactory<Chest>
-        {
-
-        }
     }
 }
-

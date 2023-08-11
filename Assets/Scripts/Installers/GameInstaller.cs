@@ -10,6 +10,7 @@ using Spawners;
 using UI;
 using Pool;
 using Test.Maze;
+using Enums;
 
 namespace Installers
 {
@@ -35,19 +36,20 @@ namespace Installers
             Container.Bind<PathGenerator>().AsSingle().NonLazy();
             Container.Bind<PositionCellConverter>().AsSingle().NonLazy();
 
-            InstallEnemiesManager();
+            InstallEnemies();
+            InstallChests();
             InstallSpawner();
             InstallPlayer();
             InstallUI();
         }
 
-        private void InstallEnemiesManager()
+        private void InstallEnemies()
         {
-            Container.Bind<EnemiesManager>().AsSingle().NonLazy();
+            Container.Bind<EnemySpawner>().AsSingle().NonLazy();
             Container.BindFactory<Enemy, Enemy.Factory>()
                     .FromComponentInNewPrefab(_settings.EnemyPrefab)
                     .UnderTransformGroup("Maze/Enemies")
-                    .WhenInjectedInto<EnemiesManager>();
+                    .WhenInjectedInto<EnemySpawner>();
         }
 
         private void InstallUI()
@@ -64,11 +66,6 @@ namespace Installers
         private void InstallSpawner()
         {
             Container.Bind<Spawner>().AsSingle().NonLazy();
-            Container.BindFactory<Chest, Chest.Factory>()
-                    .FromComponentInNewPrefab(_settings.ChestPrefab)
-                    .WithGameObjectName("Chest")
-                    .UnderTransformGroup("Maze/Chests")
-                    .WhenInjectedInto<Spawner>();
             Container.BindFactory<MazeWall, MazeWall.Factory>()
                     .FromComponentInNewPrefab(_settings.MazeWallPrefab)
                     .WithGameObjectName("Wall")
@@ -84,6 +81,16 @@ namespace Installers
         private void InstallPlayer()
         {
             Container.Bind<Player>().FromComponentInNewPrefab(_settings.PlayerPrefab).AsSingle().NonLazy();
+        }
+
+        private void InstallChests()
+        {
+            Container.Bind<ChestSpawner>().AsSingle().NonLazy();
+            Container.BindFactory<PickUpUIAnimationLauncher, PickUpUIAnimationLauncher.Factory>()
+                .FromComponentInNewPrefab(_settings.ChestPrefab)
+                .WithGameObjectName("Chest")
+                .UnderTransformGroup("Maze/Chests")
+                .WhenInjectedInto<ChestSpawner>();
         }
 
         [Serializable]

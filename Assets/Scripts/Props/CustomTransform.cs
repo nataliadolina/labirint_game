@@ -12,6 +12,7 @@ namespace Props
         private Transform _positionTransform;
         private Transform _localScaleTransform;
         private Rigidbody _rigidbody;
+        private GameObject _gameObject;
 
         internal Vector3 Position
         {
@@ -25,6 +26,11 @@ namespace Props
             set => _localScaleTransform.localScale = value;
         }
 
+        internal GameObject GameObject
+        {
+            get => _gameObject;
+        }
+
         internal Rigidbody Rigidbody
         {
             get => _rigidbody;
@@ -35,6 +41,7 @@ namespace Props
         {
             _positionTransform = settings.PositionTransform;
             _localScaleTransform = settings.LocalScaleTransform;
+            _gameObject = _positionTransform.gameObject;
         }
 
         [Serializable]

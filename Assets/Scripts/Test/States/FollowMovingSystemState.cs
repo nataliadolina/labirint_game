@@ -4,7 +4,7 @@ using Props.Enemies;
 using Maze;
 using System.Linq;
 using System;
-using Extensions;
+using Utilities.Extensions;
 using System.Collections.Generic;
 using Interfaces;
 

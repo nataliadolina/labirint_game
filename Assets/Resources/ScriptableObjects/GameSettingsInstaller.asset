@@ -32,6 +32,11 @@ MonoBehaviour:
       LabirintSizeY: 16
       ChestsNumber: 5
       EnemiesNumber: 8
+      PickUpAmount:
+      - PickUpType: 1
+        PickUpAmount: 3
+      - PickUpType: 2
+        PickUpAmount: 2
       PlacementThreshold: 0.3
     MazeFromFileData:
       PathToFile: 
@@ -48,3 +53,8 @@ MonoBehaviour:
   UiSettings:
     PickUpUIAnimationSettings:
       Duration: 1
+      PickUpAnimationData:
+      - PickUpType: 1
+        Sprite: {fileID: 21300000, guid: b9549988911ba764fb4276784faa1259, type: 3}
+      - PickUpType: 2
+        Sprite: {fileID: 21300000, guid: b9549988911ba764fb4276784faa1259, type: 3}

@@ -9,7 +9,7 @@ namespace Pool
         private Pool<PickUpUIAnimation> _pool;
         internal PickUpPool(PickUpUISpawner spawner)
         {
-            _pool = new Pool<PickUpUIAnimation>(spawner, 0);
+            _pool = new Pool<PickUpUIAnimation>(spawner, 1);
         }
 
         internal PickUpUIAnimation GetFreeElement()
