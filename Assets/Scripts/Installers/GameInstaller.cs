@@ -1,15 +1,14 @@
 using System;
 using UnityEngine;
 using Zenject;
-using Props.Chests;
 using Props.Player;
 using Props.Walls;
 using Props.Enemies;
 using Maze;
 using Spawners;
-using UI;
-using Pool;
 using Test.Maze;
+using UI;
+using Props.Chests;
 using Enums;
 
 namespace Installers
@@ -52,17 +51,6 @@ namespace Installers
                     .WhenInjectedInto<EnemySpawner>();
         }
 
-        private void InstallUI()
-        {
-            Container.Bind<PickUpPool>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<PickUpUISpawner>().AsSingle().NonLazy();
-            Container.BindFactory<PickUpUIAnimation, PickUpUIAnimation.Factory>()
-                .FromComponentInNewPrefab(_settings.CoinPrefab)
-                .WithGameObjectName("Coin")
-                .UnderTransformGroup("Canvas")
-                .WhenInjectedInto<PickUpUISpawner>();
-        }
-
         private void InstallSpawner()
         {
             Container.Bind<Spawner>().AsSingle().NonLazy();
@@ -86,11 +74,20 @@ namespace Installers
         private void InstallChests()
         {
             Container.Bind<ChestSpawner>().AsSingle().NonLazy();
-            Container.BindFactory<PickUpUIAnimationLauncher, PickUpUIAnimationLauncher.Factory>()
+            Container.BindFactory<PickUpType, Vector3, Chest, Chest.Factory>()
                 .FromComponentInNewPrefab(_settings.ChestPrefab)
                 .WithGameObjectName("Chest")
                 .UnderTransformGroup("Maze/Chests")
                 .WhenInjectedInto<ChestSpawner>();
+        }
+
+        private void InstallUI()
+        {
+            Container.Bind<PickUpUIAnimationSpawner>().AsSingle().NonLazy();
+            Container.BindMemoryPool<CoinUIAnimation, CoinUIAnimation.Pool>()
+                .FromComponentInNewPrefab(_settings.UICoinPrefab);
+            Container.BindMemoryPool<BombUIAnimation, BombUIAnimation.Pool>()
+                .FromComponentInNewPrefab(_settings.UIBombPrefab);
         }
 
         [Serializable]
@@ -103,8 +100,8 @@ namespace Installers
             public GameObject ChestPrefab;
             public GameObject MazeWallPrefab;
             public GameObject MazeWallWithTourchPrefab;
-
-            public GameObject CoinPrefab;
+            public GameObject UIBombPrefab;
+            public GameObject UICoinPrefab;
         }
     }
 }

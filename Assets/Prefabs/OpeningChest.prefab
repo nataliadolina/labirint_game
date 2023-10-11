@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 7860962132031483726}
   - component: {fileID: 7091179155611087151}
   - component: {fileID: 5234754129069372629}
-  - component: {fileID: 5767777112993597600}
   m_Layer: 0
   m_Name: OpeningChest
   m_TagString: Untagged
@@ -69,7 +68,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2552e781702b2794c8aa1d5278d4a1e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickUpUIAnimationLauncher: {fileID: 5767777112993597600}
   chestAnimator: {fileID: 5009662118787653418}
   customChestTransform: {fileID: 7091179155611087151}
   chestGUI: {fileID: 7860962132031483726}
@@ -199,18 +197,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10653949477c6ed4e9ecf79443e09a10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5767777112993597600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7425638117483799795}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2205174c89dca944da984d38039699a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &708401971672005413

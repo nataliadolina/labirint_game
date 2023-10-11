@@ -8,6 +8,6 @@ namespace Utilities.Utils
     public struct PickUpAnimationData
     {
         public PickUpType PickUpType;
-        public Sprite Sprite;
+        public GameObject Sprite;
     }
 }

@@ -1,21 +1,24 @@
 using System.Collections;
 using UnityEngine;
 using Zenject;
+using Enums;
+using Spawners;
 
 namespace Props.Chests
 {
-    internal class ChestAnimator : MonoBehaviour
+    public class ChestAnimator : MonoBehaviour
     {
         private readonly int OpenIndex = Animator.StringToHash("Open");
 
         private float _openDuration;
         private Animator _animator;
+        private PickUpType _pickUpType;
 
         [Inject]
         private CustomTransform _chestTransform;
 
         [Inject]
-        private PickUpUIAnimationLauncher _pickUpUIAnimationLauncher;
+        private PickUpUIAnimationSpawner _pickUpUIAnimationSpawner;
 
         private void Start()
         {
@@ -32,7 +35,12 @@ namespace Props.Chests
             }
         }
 
-        internal void Open()
+        public void SetUp(PickUpType pickUpType)
+        {
+            _pickUpType = pickUpType;
+        }
+
+        public void Open()
         {
             _animator.SetTrigger(OpenIndex);
             StartCoroutine(WaitToDestroyChest());
@@ -42,7 +50,11 @@ namespace Props.Chests
         {
             yield return new WaitForSeconds(_openDuration);
 
-            _pickUpUIAnimationLauncher.LaunchAnimation();
+            if (_pickUpType != PickUpType.None)
+            {
+                _pickUpUIAnimationSpawner.Spawn(_pickUpType);
+            } 
+            
             Destroy(_chestTransform.GameObject);
         }
     }

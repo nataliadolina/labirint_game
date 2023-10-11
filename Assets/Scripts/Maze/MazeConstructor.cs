@@ -5,6 +5,7 @@ using Installers;
 using Props.Player;
 using Props.Enemies;
 using Interfaces;
+using Enums;
 
 namespace Maze
 {
@@ -79,8 +80,16 @@ namespace Maze
                             wallTransform.position = cellPosition;
                             break;
 
-                        case (int)MazeSigns.Chest:
-                            _chestSpawner.Spawn(cellPosition);
+                        case (int)MazeSigns.ChestWithBomb:
+                            _chestSpawner.Spawn(cellPosition, PickUpType.Bomb);
+                            break;
+
+                        case (int)MazeSigns.ChestWithCoin:
+                            _chestSpawner.Spawn(cellPosition, PickUpType.Coin);
+                            break;
+
+                        case (int)MazeSigns.EmptyChest:
+                            _chestSpawner.Spawn(cellPosition, PickUpType.None);
                             break;
 
                         case (int)MazeSigns.Enemy:

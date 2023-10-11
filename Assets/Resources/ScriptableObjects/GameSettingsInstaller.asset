@@ -24,19 +24,23 @@ MonoBehaviour:
       type: 3}
     MazeWallWithTourchPrefab: {fileID: 2897473457601073980, guid: 22ef5f332c2729e459db8c04e0e7fa4c,
       type: 3}
-    CoinPrefab: {fileID: 5940073535992218960, guid: 4e3e83b74e33bbd46ba57931bd3f3953,
+    UIBombPrefab: {fileID: 5940073535992218960, guid: e3e3d3e1b90dc93429f36175f9fb81e6,
+      type: 3}
+    UICoinPrefab: {fileID: 5940073535992218960, guid: 4e3e83b74e33bbd46ba57931bd3f3953,
       type: 3}
   Maze:
     MazeData:
       LabirintSizeX: 30
       LabirintSizeY: 16
-      ChestsNumber: 5
-      EnemiesNumber: 8
-      PickUpAmount:
-      - PickUpType: 1
-        PickUpAmount: 3
-      - PickUpType: 2
-        PickUpAmount: 2
+      MazeSignsAmountData:
+      - Sign: -3
+        Amount: 5
+      - Sign: 1
+        Amount: 3
+      - Sign: 2
+        Amount: 1
+      - Sign: 3
+        Amount: 2
       PlacementThreshold: 0.3
     MazeFromFileData:
       PathToFile: 
@@ -53,8 +57,3 @@ MonoBehaviour:
   UiSettings:
     PickUpUIAnimationSettings:
       Duration: 1
-      PickUpAnimationData:
-      - PickUpType: 1
-        Sprite: {fileID: 21300000, guid: b9549988911ba764fb4276784faa1259, type: 3}
-      - PickUpType: 2
-        Sprite: {fileID: 21300000, guid: b9549988911ba764fb4276784faa1259, type: 3}

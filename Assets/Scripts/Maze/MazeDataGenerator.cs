@@ -5,13 +5,15 @@ using Utilities.Utils;
 
 namespace Maze
 {
-    internal enum MazeSigns
+    public enum MazeSigns
     {
-        Enemy = -4,
-        Player = -3,
-        Chest = -2,
+        Enemy = -3,
+        Player = -2,
         Wall = -1,
         EmptySpace = 0,
+        ChestWithBomb = 1,
+        EmptyChest = 2,
+        ChestWithCoin = 3
     }
 
     internal class MazeDataGenerator : IMazeDataGenerator
@@ -19,8 +21,7 @@ namespace Maze
         public float placementThreshold;
         private List<(int, int)> emptyCells;
 
-        private int _chestsNumber;
-        private int _enemiesNumber;
+        private List<MazeSignsAmountData> _mazeSignsAmountDatas;
         private int _sizeRows;
         private int _sizeCols;
 
@@ -35,9 +36,7 @@ namespace Maze
             placementThreshold = settings.PlacementThreshold;
             emptyCells = new List<(int, int)>();
 
-            _chestsNumber = settings.ChestsNumber;
-
-            _enemiesNumber = settings.EnemiesNumber;
+            _mazeSignsAmountDatas = settings.MazeSignsAmountData;
 
             _sizeRows = settings.LabirintSizeX;
             _sizeCols = settings.LabirintSizeY;
@@ -105,8 +104,18 @@ namespace Maze
             }
 
             GeneratePlayerPos();
-            GeneratePoses(MazeSigns.Chest, _chestsNumber);
-            GeneratePoses(MazeSigns.Enemy, _enemiesNumber);
+            foreach (MazeSignsAmountData mazeSignAmountData in _mazeSignsAmountDatas)
+            {
+                if (mazeSignAmountData.Sign == MazeSigns.EmptySpace || mazeSignAmountData.Sign == MazeSigns.EmptySpace)
+                {
+                    continue;
+                }
+
+                MazeSigns sign = mazeSignAmountData.Sign;
+                int amount = mazeSignAmountData.Amount;
+                GeneratePoses(sign, amount);
+            }
+            
             return _maze;
         }
 
@@ -116,11 +125,7 @@ namespace Maze
             public int LabirintSizeX;
             public int LabirintSizeY;
 
-            public int ChestsNumber;
-            public int EnemiesNumber;
-
-            public List<PickUpTypeAmountData> PickUpAmount;
-
+            public List<MazeSignsAmountData> MazeSignsAmountData;
             public float PlacementThreshold;
         }
     }

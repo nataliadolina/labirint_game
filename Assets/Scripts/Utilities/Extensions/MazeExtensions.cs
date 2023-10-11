@@ -62,7 +62,7 @@ namespace Utilities.Extensions
                 return false;
             }
 
-            if (field[(int)cell.x, (int)cell.y] == (int)MazeSigns.Wall || field[(int)cell.x, (int)cell.y] == (int)MazeSigns.Chest)
+            if (field[(int)cell.x, (int)cell.y] != (int)MazeSigns.EmptySpace)
             {
                 return false;
             }

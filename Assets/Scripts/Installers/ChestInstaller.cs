@@ -8,8 +8,6 @@ namespace Installers
     internal class ChestInstaller : MonoInstaller
     {
         [SerializeField]
-        private PickUpUIAnimationLauncher pickUpUIAnimationLauncher;
-        [SerializeField]
         private ChestAnimator chestAnimator;
         [SerializeField]
         private CustomTransform customChestTransform;
@@ -18,10 +16,10 @@ namespace Installers
 
         public override void InstallBindings()
         {
+            Container.Bind<Chest>().AsSingle().NonLazy();
             Container.BindInstance(chestAnimator).AsSingle().NonLazy();
             Container.BindInstance(chestGUI).AsSingle().NonLazy();
             Container.BindInstance(customChestTransform).AsSingle().NonLazy();
-            Container.BindInstance(pickUpUIAnimationLauncher).AsSingle().NonLazy();
         }
     }
 }
