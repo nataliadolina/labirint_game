@@ -17,6 +17,8 @@ namespace Installers
     {
         [Inject]
         private Settings _settings = null;
+        [SerializeField]
+        private Transform canvasTransform;
 
         public override void InstallBindings()
         {
@@ -74,7 +76,7 @@ namespace Installers
         private void InstallChests()
         {
             Container.Bind<ChestSpawner>().AsSingle().NonLazy();
-            Container.BindFactory<PickUpType, Vector3, Chest, Chest.Factory>()
+            Container.BindFactory<Chest, Chest.Factory>()
                 .FromComponentInNewPrefab(_settings.ChestPrefab)
                 .WithGameObjectName("Chest")
                 .UnderTransformGroup("Maze/Chests")
@@ -85,9 +87,11 @@ namespace Installers
         {
             Container.Bind<PickUpUIAnimationSpawner>().AsSingle().NonLazy();
             Container.BindMemoryPool<CoinUIAnimation, CoinUIAnimation.Pool>()
-                .FromComponentInNewPrefab(_settings.UICoinPrefab);
+                .FromComponentInNewPrefab(_settings.UICoinPrefab)
+                .UnderTransform(canvasTransform);
             Container.BindMemoryPool<BombUIAnimation, BombUIAnimation.Pool>()
-                .FromComponentInNewPrefab(_settings.UIBombPrefab);
+                .FromComponentInNewPrefab(_settings.UIBombPrefab)
+                .UnderTransform(canvasTransform);
         }
 
         [Serializable]

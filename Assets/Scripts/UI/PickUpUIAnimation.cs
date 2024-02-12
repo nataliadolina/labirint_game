@@ -36,12 +36,11 @@ namespace UI
             _pickUpUIAnimationSpawner = spawner;
 
             Vector3 aimScale = _rectTransform.localScale * 1.5f;
-            IResourceCounter resourceCounter = resourceCounters.Where(x => x.PickUpType == pickUpType).FirstOrDefault();
+            _resourceCounter = resourceCounters.Where(x => x.PickUpType == pickUpType).FirstOrDefault();
             Vector3 endPosition = _resourceCounter.IconPosition;
 
             Tween scaleTween = _rectTransform.DOScale(aimScale, _duration / 2)
                 .SetLoops(2, LoopType.Yoyo)
-                .OnStart(OnStart)
                 .OnComplete(OnComplete)
                 .SetAutoKill(false)
                 .Pause();
@@ -55,17 +54,11 @@ namespace UI
 
         private void OnComplete()
         {
-            _gameObject.SetActive(false);
             _resourceCounter.AddResource();
             _pickUpUIAnimationSpawner.Despawn(pickUpType, this);
         }
 
-        private void OnStart()
-        {
-            _gameObject.SetActive(true);
-        }
-
-        public void StartAnimation(Vector3  position)
+        public void StartAnimation(Vector3 position)
         {
             transform.position = position;
 

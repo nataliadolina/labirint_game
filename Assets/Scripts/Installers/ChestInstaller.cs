@@ -16,7 +16,6 @@ namespace Installers
 
         public override void InstallBindings()
         {
-            Container.Bind<Chest>().AsSingle().NonLazy();
             Container.BindInstance(chestAnimator).AsSingle().NonLazy();
             Container.BindInstance(chestGUI).AsSingle().NonLazy();
             Container.BindInstance(customChestTransform).AsSingle().NonLazy();

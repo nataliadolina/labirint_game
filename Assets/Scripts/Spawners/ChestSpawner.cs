@@ -15,7 +15,8 @@ namespace Spawners
 
         internal void Spawn(Vector3 position, PickUpType pickUpType)
         {
-            _chestFactory.Create(pickUpType, position);
+            Chest chest = _chestFactory.Create();
+            chest.Init(position, pickUpType);
         }
     }
 }

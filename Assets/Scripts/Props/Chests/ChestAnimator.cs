@@ -3,6 +3,7 @@ using UnityEngine;
 using Zenject;
 using Enums;
 using Spawners;
+using UI;
 
 namespace Props.Chests
 {
@@ -52,7 +53,8 @@ namespace Props.Chests
 
             if (_pickUpType != PickUpType.None)
             {
-                _pickUpUIAnimationSpawner.Spawn(_pickUpType);
+                PickUpUIAnimation pickUpUIAnimation = _pickUpUIAnimationSpawner.Spawn(_pickUpType);
+                pickUpUIAnimation.StartAnimation(Camera.main.WorldToScreenPoint(transform.position));
             } 
             
             Destroy(_chestTransform.GameObject);

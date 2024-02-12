@@ -4,18 +4,27 @@ using UnityEngine;
 
 namespace Props.Chests
 {
-    public class Chest
+    public class Chest : MonoBehaviour
     {
-        public Chest(PickUpType pickUpType,
-            Vector3 position,
+        private CustomTransform _customTransform;
+        private ChestAnimator _chestAnimator;
+
+        [Inject]
+        private void Construct(
             CustomTransform customTransform,
             ChestAnimator chestAnimator)
         {
-            customTransform.Position = position;
-            chestAnimator.SetUp(pickUpType);
+            _customTransform = customTransform;
+            _chestAnimator = chestAnimator;
         }
 
-        public class Factory : PlaceholderFactory<PickUpType, Vector3, Chest>
+        public void Init(Vector3 position, PickUpType pickUpType)
+        {
+            _customTransform.Position = position;
+            _chestAnimator.SetUp(pickUpType);
+        }
+
+        public class Factory : PlaceholderFactory<Chest>
         {
 
         }
